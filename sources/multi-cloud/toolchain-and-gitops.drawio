@@ -1,0 +1,225 @@
+<mxfile host="65bd71144e">
+    <diagram name="GitOps_Toolchain_Architecture" id="GitOps_Architecture_01">
+        <mxGraphModel dx="1479" dy="975" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1500" pageHeight="850" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="aws_hub" value="AWS Central Management &amp;amp; Platform Toolchain" style="swimlane;whiteSpace=wrap;html=1;fillColor=#fff9c4;strokeColor=#fbc02d;fontStyle=1;startSize=30;rounded=1;fontSize=14;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="40" width="1400" height="260" as="geometry"/>
+                </mxCell>
+                <mxCell id="git_repo" value="GItllab&lt;div&gt;(Git Repository)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;" parent="aws_hub" vertex="1">
+                    <mxGeometry x="40" y="100" width="160" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="jenkins" value="Jenkins&lt;br&gt;(Central CI Server)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#2196f3;fontStyle=1;" parent="aws_hub" vertex="1">
+                    <mxGeometry x="250" y="100" width="160" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="nexus" value="Nexus Registry&lt;br&gt;(Artifacts)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#b2dfdb;strokeColor=#009688;fontStyle=1;" parent="aws_hub" vertex="1">
+                    <mxGeometry x="460" y="60" width="120" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="ecr" value="AWS ECR&lt;br&gt;(Container Images)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#ffcc80;strokeColor=#ff9800;fontStyle=1;" parent="aws_hub" vertex="1">
+                    <mxGeometry x="460" y="150" width="120" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="rhacm" value="RHACM&lt;br&gt;(Central Control Plane)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcdd2;strokeColor=#f44336;fontStyle=1;fontSize=14;" parent="aws_hub" vertex="1">
+                    <mxGeometry x="650" y="100" width="200" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="vault" value="HashiCorp Vault / AWS Secrets&lt;br&gt;(Central Secret Manager)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cfd8dc;strokeColor=#455a64;fontStyle=1;" parent="aws_hub" vertex="1">
+                    <mxGeometry x="920" y="100" width="200" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="grafana" value="Central Grafana&lt;br&gt;(Unified Dashboard)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe082;strokeColor=#ffb300;fontStyle=1;" parent="aws_hub" vertex="1">
+                    <mxGeometry x="1170" y="100" width="180" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge_git_jenkins" value="Webhook/Trigger" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=2;strokeColor=#1976d2;startArrow=none;endArrow=classic;" parent="aws_hub" source="git_repo" target="jenkins" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge_jenkins_nexus" value="Push Artifacts" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=2;strokeColor=#1976d2;startArrow=none;endArrow=classic;" parent="aws_hub" source="jenkins" target="nexus" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="430" y="130"/>
+                            <mxPoint x="430" y="95"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="edge_jenkins_ecr" value="Push Images" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=2;strokeColor=#1976d2;startArrow=none;endArrow=classic;" parent="aws_hub" source="jenkins" target="ecr" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="430" y="130"/>
+                            <mxPoint x="430" y="185"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="site1" value="Site 1: OpenShift DC" style="swimlane;whiteSpace=wrap;html=1;fillColor=#e8f5e9;strokeColor=#4caf50;fontStyle=1;startSize=30;rounded=1;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="440" width="310" height="320" as="geometry"/>
+                </mxCell>
+                <mxCell id="argocd1" value="OpenShift GitOps&lt;br&gt;(ArgoCD)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffecb3;strokeColor=#ffc107;fontStyle=1;" parent="site1" vertex="1">
+                    <mxGeometry x="40" y="60" width="230" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="mimir1" value="Mimir / Loki&lt;br&gt;(Local Metrics/Logs Storage)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#8e24aa;fontStyle=1;" parent="site1" vertex="1">
+                    <mxGeometry x="40" y="140" width="230" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="app1" value="Application Workloads / Pods&lt;br&gt;(Run &amp;amp; Mount Secrets)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c8e6c9;strokeColor=#388e3c;fontStyle=1;" parent="site1" vertex="1">
+                    <mxGeometry x="40" y="220" width="230" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge_argo_app1" value="Deploy / Sync" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=2;strokeColor=#ff9800;" parent="site1" source="argocd1" target="app1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="20" y="85"/>
+                            <mxPoint x="20" y="250"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="site2" value="Site 2: OpenShift DR" style="swimlane;whiteSpace=wrap;html=1;fillColor=#e8f5e9;strokeColor=#4caf50;fontStyle=1;startSize=30;rounded=1;" parent="1" vertex="1">
+                    <mxGeometry x="400" y="440" width="310" height="320" as="geometry"/>
+                </mxCell>
+                <mxCell id="argocd2" value="OpenShift GitOps&lt;br&gt;(ArgoCD)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffecb3;strokeColor=#ffc107;fontStyle=1;" parent="site2" vertex="1">
+                    <mxGeometry x="40" y="60" width="230" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="mimir2" value="Mimir / Loki&lt;br&gt;(Local Metrics/Logs Storage)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#8e24aa;fontStyle=1;" parent="site2" vertex="1">
+                    <mxGeometry x="40" y="140" width="230" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="app2" value="Application Workloads / Pods&lt;br&gt;(Run &amp;amp; Mount Secrets)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c8e6c9;strokeColor=#388e3c;fontStyle=1;" parent="site2" vertex="1">
+                    <mxGeometry x="40" y="220" width="230" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge_argo_app2" value="Deploy / Sync" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=2;strokeColor=#ff9800;" parent="site2" source="argocd2" target="app2" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="20" y="85"/>
+                            <mxPoint x="20" y="250"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="site3" value="Site 3: Openshift LCP" style="swimlane;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#2196f3;fontStyle=1;startSize=30;rounded=1;" parent="1" vertex="1">
+                    <mxGeometry x="760" y="440" width="310" height="320" as="geometry"/>
+                </mxCell>
+                <mxCell id="argocd3" value="OpenShift GitOps&lt;br&gt;(ArgoCD)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffecb3;strokeColor=#ffc107;fontStyle=1;" parent="site3" vertex="1">
+                    <mxGeometry x="40" y="60" width="230" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="mimir3" value="Mimir / Loki&lt;br&gt;(Local Metrics/Logs Storage)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#8e24aa;fontStyle=1;" parent="site3" vertex="1">
+                    <mxGeometry x="40" y="140" width="230" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="app3" value="Application Workloads / Pods&lt;br&gt;(Run &amp;amp; Mount Secrets)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1976d2;fontStyle=1;" parent="site3" vertex="1">
+                    <mxGeometry x="40" y="220" width="230" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge_argo_app3" value="Deploy / Sync" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=2;strokeColor=#ff9800;" parent="site3" source="argocd3" target="app3" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="20" y="85"/>
+                            <mxPoint x="20" y="250"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="site4" value="Site 4: AWS Cloud" style="swimlane;whiteSpace=wrap;html=1;fillColor=#fff9c4;strokeColor=#fbc02d;fontStyle=1;startSize=30;rounded=1;" parent="1" vertex="1">
+                    <mxGeometry x="1120" y="440" width="310" height="320" as="geometry"/>
+                </mxCell>
+                <mxCell id="argocd4" value="OpenShift GitOps&lt;br&gt;(ArgoCD)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffecb3;strokeColor=#ffc107;fontStyle=1;" parent="site4" vertex="1">
+                    <mxGeometry x="40" y="60" width="230" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="mimir4" value="Mimir / Loki&lt;br&gt;(Local Metrics/Logs Storage)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#8e24aa;fontStyle=1;" parent="site4" vertex="1">
+                    <mxGeometry x="40" y="140" width="230" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="app4" value="Application Workloads / Pods&lt;br&gt;(Run &amp;amp; Mount Secrets)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffecb3;strokeColor=#ffa000;fontStyle=1;" parent="site4" vertex="1">
+                    <mxGeometry x="40" y="220" width="230" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge_argo_app4" value="Deploy / Sync" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=2;strokeColor=#ff9800;" parent="site4" source="argocd4" target="app4" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="20" y="85"/>
+                            <mxPoint x="20" y="250"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="link_rhacm_argo1" value="Manage &amp;amp; Config GitOps" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=2;strokeColor=#d32f2f;fontColor=#d32f2f;fontStyle=1;exitX=0.25;exitY=1;entryX=0.5;entryY=0;" parent="1" source="rhacm" target="argocd1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="740" y="320"/>
+                            <mxPoint x="195" y="320"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="link_rhacm_argo4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=2;strokeColor=#d32f2f;exitX=0.75;exitY=1;entryX=0.5;entryY=0;dashed=1;" parent="1" source="rhacm" target="argocd4" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="840" y="320"/>
+                            <mxPoint x="1275" y="320"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="link_git_argo" value="Watch &amp;amp; Pull Manifests" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=2;strokeColor=#ff9800;fontColor=#e65100;fontStyle=1;exitX=0;exitY=0.5;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" parent="1" source="git_repo" target="argocd2" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="30" y="170"/>
+                            <mxPoint x="30" y="355"/>
+                            <mxPoint x="498" y="355"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="link_git_argo2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;dashed=1;strokeWidth=2;strokeColor=#ff9800;exitX=0;exitY=0.5;entryX=0.31;entryY=0.005;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="git_repo" target="argocd1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="30" y="170"/>
+                            <mxPoint x="30" y="380"/>
+                            <mxPoint x="151" y="380"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="link_pull_image" value="Pull" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=2;strokeColor=#1976d2;fontColor=#0d47a1;fontStyle=1;exitX=0.5;exitY=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" parent="1" source="ecr" target="app2" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="560" y="380"/>
+                            <mxPoint x="371" y="380"/>
+                            <mxPoint x="371" y="781"/>
+                            <mxPoint x="498" y="781"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="link_pull_image3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;dashed=1;strokeWidth=2;strokeColor=#1976d2;exitX=0.5;exitY=1;entryX=0;entryY=0.5;" parent="1" source="ecr" target="app3" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="560" y="380"/>
+                            <mxPoint x="730" y="380"/>
+                            <mxPoint x="730" y="690"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="link_vault_app3" value="Fetch Secrets" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=2;strokeColor=#2e7d32;fontColor=#1b5e20;fontStyle=1;entryX=1;entryY=0.25;" parent="1" target="app3" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1050" y="210"/>
+                            <mxPoint x="1050" y="675"/>
+                        </Array>
+                        <mxPoint x="1050" y="213" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="link_vault_app4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;dashed=1;strokeWidth=2;strokeColor=#2e7d32;exitX=0.75;exitY=1;entryX=0;entryY=0.25;" parent="1" source="vault" target="app4" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1101" y="210"/>
+                            <mxPoint x="1101" y="675"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="link_grafana_mimir3" value="Query Metrics/Logs" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=2;strokeColor=#6a1b9a;fontColor=#4a148c;fontStyle=1;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1480" y="175"/>
+                            <mxPoint x="1480" y="605"/>
+                            <mxPoint x="1396" y="605"/>
+                        </Array>
+                        <mxPoint x="1396" y="175" as="sourcePoint"/>
+                        <mxPoint x="1396" y="608" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="link_grafana_mimir4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;dashed=1;strokeWidth=2;strokeColor=#6a1b9a;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1293" y="377"/>
+                            <mxPoint x="740" y="377"/>
+                            <mxPoint x="740" y="605"/>
+                        </Array>
+                        <mxPoint x="1293" y="210" as="sourcePoint"/>
+                        <mxPoint x="663" y="605" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
